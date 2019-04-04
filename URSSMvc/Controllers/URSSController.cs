@@ -55,45 +55,59 @@ namespace URSSMvc.Controllers
         // GET: URSS/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            PeupleModel peupleModel = new PeupleModel();
+            DataTable dtblPeuple = new DataTable();
+            using (MySqlConnection sqlCon = new MySqlConnection(connectionString))
+            {
+                sqlCon.Open();
+                string query = "SELECT * FROM peuple WHERE PersonneID = @PersonneID";
+                MySqlDataAdapter sqlDa = new MySqlDataAdapter(query, sqlCon);
+                sqlDa.SelectCommand.Parameters.AddWithValue("@PersonneID", id);
+                sqlDa.Fill(dtblPeuple);
+            }
+            if(dtblPeuple.Rows.Count == 1)
+            {
+                peupleModel.PersonneID = Convert.ToInt32(dtblPeuple.Rows[0][0].ToString());
+                peupleModel.Nom = dtblPeuple.Rows[0][1].ToString();
+                peupleModel.Age = Convert.ToInt32(dtblPeuple.Rows[0][2].ToString());
+                peupleModel.Ville = dtblPeuple.Rows[0][3].ToString();
+
+                return View(peupleModel);
+            }
+            else
+                return RedirectToAction("Index");
         }
 
         // POST: URSS/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(PeupleModel peupleModel)
         {
-            try
+            using (MySqlConnection sqlCon = new MySqlConnection(connectionString))
             {
-                // TODO: Add update logic here
-
-                return RedirectToAction("Index");
+                sqlCon.Open();
+                string query = "UPDATE peuple SET Nom = @Nom, Age = @Age, Ville = @Ville WHERE PersonneID = @PersonneID";
+                MySqlCommand sqlCmd = new MySqlCommand(query, sqlCon);
+                sqlCmd.Parameters.AddWithValue("@PersonneID", peupleModel.PersonneID);
+                sqlCmd.Parameters.AddWithValue("@Nom", peupleModel.Nom);
+                sqlCmd.Parameters.AddWithValue("@Age", peupleModel.Age);
+                sqlCmd.Parameters.AddWithValue("@Ville", peupleModel.Ville);
+                sqlCmd.ExecuteNonQuery();
             }
-            catch
-            {
-                return View();
-            }
+            return RedirectToAction("Index");
         }
 
         // GET: URSS/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
-        }
-
-        // POST: URSS/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
+            using (MySqlConnection sqlCon = new MySqlConnection(connectionString))
             {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
+                sqlCon.Open();
+                string query = "DELETE FROM peuple WHERE PersonneID = @PersonneID";
+                MySqlCommand sqlCmd = new MySqlCommand(query, sqlCon);
+                sqlCmd.Parameters.AddWithValue("@PersonneID", id);
+                sqlCmd.ExecuteNonQuery();
             }
-            catch
-            {
-                return View();
-            }
+            return RedirectToAction("Index");
         }
     }
 }
