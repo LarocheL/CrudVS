@@ -6,6 +6,8 @@ Dépot GIT pour le projet de CRUD en C# (URSS Manager) dans le cadre de la LP DI
 
 ### Installation base de données
 
+```
+
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
 START TRANSACTION;
@@ -27,6 +29,8 @@ ALTER TABLE `peuple`
 ALTER TABLE `peuple`
   MODIFY `PersonneID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 COMMIT;
+
+```
 
 ### Configuration
 
