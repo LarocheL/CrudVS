@@ -1,9 +1,9 @@
 ﻿@model System.Data.DataTable
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "URSS Manager";
 }
-
-<table class="table table-bordered table-striped">
+<hr /> 
+<table id="table" class="table table-bordered table-striped">
     <tr>
         <th>Nom</th>
         <th>Âge</th>
@@ -17,12 +17,11 @@
             <td>@Model.Rows[i][2]</td>
             <td>@Model.Rows[i][3]</td>
             <td>
-                <a href="@Url.Action("Edit", "URSS", new {@id=@Model.Rows[i][0] })">Edit</a>
-                <a href="@Url.Action("Delete", "URSS", new {@id=@Model.Rows[i][0] })">Delete</a>
+                <a role="button" class="btn btn-warning" href="@Url.Action("Edit", "URSS", new {@id=@Model.Rows[i][0] })">Modifier</a>
+                <a role="button" class="btn btn-danger" href="@Url.Action("Delete", "URSS", new {@id=@Model.Rows[i][0] })">Supprimer</a>
             </td>
         </tr>
     }
 </table>
 
-<a href="@Url.Action("Create","URSS")">Ajouter</a>
-
+<a role="button" class="btn btn-primary" href="@Url.Action("Create","URSS")">Ajouter</a>
